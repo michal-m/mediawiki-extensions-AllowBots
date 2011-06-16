@@ -26,6 +26,10 @@ if (in_array($_SERVER['REMOTE_ADDR'], $wgBotsIPs)) {
 	$wgGroupPermissions['*']['edit'] = false;
 	$wgGroupPermissions['*']['createpage'] = false;
 	$wgGroupPermissions['*']['createtalk'] = false;
+	
 	# don't display IP header
 	$wgShowIPinHeader = false;
+	
+	# enforce simple skin for crawling
+	$wgDefaultSkin = 'simple';
 }
