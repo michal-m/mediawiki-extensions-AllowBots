@@ -11,14 +11,25 @@ $wgExtensionCredits['parserhook'][] = array(
         'path' => __FILE__,
         'name' => 'Allow Bot Access',
         'author' => 'Michał Musiał',
-        'version'=> '0.1'
+        'version'=> '0.2'
 );
 
-if ( ! isset($wgBotsIPs) ) {
+if ( ! isset( $wgBotsIPs ) ) {
 	$wgBotsIPs = array();
 }
 
-if (in_array($_SERVER['REMOTE_ADDR'], $wgBotsIPs)) {
+if ( ! isset( $wgBotsCheckUA ) ) {
+	$wgBotsCheckUA = false;
+}
+
+if ( ! isset( $wgBotsEnforceSkin ) ) {
+	$wgBotsEnforceSkin = false;
+}
+
+if ( in_array( $_SERVER['REMOTE_ADDR'], $wgBotsIPs ) ) {
+	if ( $wgBotsCheckUA && $_SERVER['HTTP_USER_AGENT'] != array_search( $_SERVER['REMOTE_ADDR'], $wgBotsIPs ) )
+		return false;
+
 	$wgGroupPermissions['*']['read'] = true;
 	# disable account creation
 	$wgGroupPermissions['*']['createaccount'] = false;
@@ -31,5 +42,7 @@ if (in_array($_SERVER['REMOTE_ADDR'], $wgBotsIPs)) {
 	$wgShowIPinHeader = false;
 	
 	# enforce simple skin for crawling
-	$wgDefaultSkin = 'simple';
+	if ( $wgBotsEnforceSkin ) {
+		$wgDefaultSkin = $wgBotsEnforceSkin;
+	}
 }
