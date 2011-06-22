@@ -11,7 +11,7 @@ $wgExtensionCredits['parserhook'][] = array(
         'path' => __FILE__,
         'name' => 'Allow Bot Access',
         'author' => 'Michał Musiał',
-        'version'=> '0.2'
+        'version'=> '0.2.1'
 );
 
 if ( ! isset( $wgBotsIPs ) ) {
@@ -41,10 +41,16 @@ if ( in_array( $_SERVER['REMOTE_ADDR'], $wgBotsIPs ) ) {
 	}
 
 	if ( ! $wgBotsCheckUA || $wgBotsMatchedUA ) {
+		# Disable any restrictions set by Lockdown extension
+		unset( $wgNamespacePermissionLockdown );
+		
+		# Allor read all
 		$wgGroupPermissions['*']['read'] = true;
+		
 		# disable account creation
 		$wgGroupPermissions['*']['createaccount'] = false;
-		# disable anonymous editing/creation/talk
+		
+		# disable anonymous editing
 		$wgGroupPermissions['*']['edit'] = false;
 		$wgGroupPermissions['*']['createpage'] = false;
 		$wgGroupPermissions['*']['createtalk'] = false;
