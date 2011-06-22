@@ -26,23 +26,35 @@ if ( ! isset( $wgBotsEnforceSkin ) ) {
 	$wgBotsEnforceSkin = false;
 }
 
-if ( in_array( $_SERVER['REMOTE_ADDR'], $wgBotsIPs ) ) {
-	if ( $wgBotsCheckUA && $_SERVER['HTTP_USER_AGENT'] != array_search( $_SERVER['REMOTE_ADDR'], $wgBotsIPs ) )
-		return false;
+$wgBotsMatchedUA = false;
 
-	$wgGroupPermissions['*']['read'] = true;
-	# disable account creation
-	$wgGroupPermissions['*']['createaccount'] = false;
-	# disable anonymous editing/creation/talk
-	$wgGroupPermissions['*']['edit'] = false;
-	$wgGroupPermissions['*']['createpage'] = false;
-	$wgGroupPermissions['*']['createtalk'] = false;
-	
-	# don't display IP header
-	$wgShowIPinHeader = false;
-	
-	# enforce simple skin for crawling
-	if ( $wgBotsEnforceSkin ) {
-		$wgDefaultSkin = $wgBotsEnforceSkin;
+if ( in_array( $_SERVER['REMOTE_ADDR'], $wgBotsIPs ) ) {
+	if ( $wgBotsCheckUA ) {
+		$userUA = $_SERVER['HTTP_USER_AGENT'];
+		$matchUA = array_search( $_SERVER['REMOTE_ADDR'], $wgBotsIPs );
+
+		if ( strpos( $userUA, $matchUA ) !== false ) {
+			$wgBotsMatchedUA = true;
+		}
+		
+		unset( $userUA, $matchUA );
+	}
+
+	if ( ! $wgBotsCheckUA || $wgBotsMatchedUA ) {
+		$wgGroupPermissions['*']['read'] = true;
+		# disable account creation
+		$wgGroupPermissions['*']['createaccount'] = false;
+		# disable anonymous editing/creation/talk
+		$wgGroupPermissions['*']['edit'] = false;
+		$wgGroupPermissions['*']['createpage'] = false;
+		$wgGroupPermissions['*']['createtalk'] = false;
+		
+		# don't display IP header
+		$wgShowIPinHeader = false;
+		
+		# enforce simple skin for crawling
+		if ( $wgBotsEnforceSkin ) {
+			$wgDefaultSkin = $wgBotsEnforceSkin;
+		}
 	}
 }
