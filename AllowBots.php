@@ -11,6 +11,7 @@ $wgExtensionCredits['parserhook'][] = array(
 		'path'		=> __FILE__,
 		'name' 		=> 'Allow Bot Access',
 		'author' 	=> 'Michał Musiał',
+		'url' 		=> 'https://github.com/michal-m/mediawiki-extensions-AllowBots',
 		'version'	=> '0.2.1'
 );
 
