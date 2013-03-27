@@ -47,7 +47,8 @@ If you want to enforce a particular MediaWiki Skin to be used when accessed by t
 $wgBotsEnforceSkin = 'noCssSkin';
 ```
 
-## Complete Example
+
+## Usage Example
 
 ```php
 // AllowBots Extension
@@ -57,3 +58,7 @@ $wgBotsIPs['12.34.56.78'] = 'A Crawler User-Agent String';
 $wgBotsIPs['12.34.56.79'] = 'A Crawler User-Agent String';
 require_once $IP . '/extensions/AllowBots/AllowBots.php';
 ```
+
+## Compatibility
+
+Although the extensions has only been tested on MediaWiki 1.16 it should be working just fine with newer versions, too.
